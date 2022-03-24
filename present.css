@@ -1,0 +1,38 @@
+#body{
+
+    font-family: 'Texturina', serif;
+    background-color: #2b323c;
+    color: white;
+}
+#top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+  }
+  #fiftypc{
+height: 50vh;
+border-radius: round;
+width: 90%;
+display: flex;
+justify-content: center;
+align-items: center;
+  }
+  #fiftypc button{
+      background-color: #2b323c;
+      border: none;
+      outline: none;
+      color: white;
+      width: 100%;
+      height: 100%;
+      font-size: 30px;
+  }
