@@ -145,42 +145,32 @@
 </style>
 
 <body id="body" onload="load()">
-    <div class="layer" id="layer">
-        <center class="text-light">
-            <h3>Activation ID</h3>
-            <h4 id="randomno"></h4>
-            <br>
-        </center>
-    </div>
-    <br>
-    <center>
-        
-    <svg height="300px" width="300px" onclick="change()" id="switch">
-        <circle cx="150" cy="150" r="150" fill="green" id="switch"></circle>
-    </svg>
-    <br>
-    <hr>
-    <h3>Status: <span id="status">Off</span></h3>
-    <img src="circuit_off.png" id="diagram" alt="" style="width: 100%;">
-    </center>
+    <input type="number" placeholder="Activation ID" class="form-control" id="id" max="9999">
+    <button onclick="activate()" class="btn btn-light">Activate</button>
+
+    <ul class="list-group" id="list">
+    </ul>
 </body>
-<iframe src="" id="iframe" frameborder="0" hidden></iframe>
 <script>
-    newval = false;
-    function change() {
-        if (!(newval)) {
-            document.getElementById('status').innerHTML = 'On';
-            document.getElementById('switch').innerHTML = '<circle cx="150" cy="150" r="150"  fill="red" id="switch"></circle > ';
-            document.getElementById('iframe').src = 'https://blynk.cloud/external/api/update?token=B6SkNZbsXLFQp6D8lh3k3htBVwAGTjkw&v0=1';
-            document.getElementById('diagram').src = 'circuit_on.png';
-            newval = true;
-        } else if (newval) {
-            document.getElementById('diagram').src = 'circuit_off.png';
-            document.getElementById('status').innerHTML = 'Off';
-            document.getElementById('switch').innerHTML = '<circle cx="150" cy="150" r="150"  fill="green" id="switch"></circle > ';
-            document.getElementById('iframe').src = 'https://blynk.cloud/external/api/update?token=B6SkNZbsXLFQp6D8lh3k3htBVwAGTjkw&v0=0'
-            newval = false;
-        }
+    function load() {
+        firebase.database().ref('smarthome/').on('value', (snapshot) => {
+            const data = snapshot.val();
+            active = data;
+            document.getElementById('list').innerHTML = '';
+            for (i = 0; i < 9999; i++) {
+                if (data[i]) {
+                    if (data[i].active) {
+                        document.getElementById('list').innerHTML += '  <a href="#" onclick="deactivate(' + i + ')" class="list-group-item list-group-item-action">' + i + '</a>';
+                    }
+                }
+            }
+        })
+    }
+    function deactivate(d) {
+        firebase.database().ref('smarthome/' + d + '/active').set(false);
+    }
+    function activate() {
+        firebase.database().ref('smarthome/' + document.getElementById('id').value + '/active').set(true);
     }
 </script>
 
